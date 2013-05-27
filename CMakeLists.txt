@@ -8,7 +8,7 @@ set(CMAKE_LEGACY_CYGWIN_WIN32 0) # Remove when CMake >= 2.8.4 is required
 
 
 # set the project name
-project(HelloWiesel)
+project(WieselApiDemos)
 
 
 # in this case, the engine folder is in the same repository,
@@ -23,11 +23,11 @@ include(${WIESEL_DIR}/build/build.cmake)
 
 
 
-wiesel_create_executable(HelloWiesel ./src)
+wiesel_create_executable(WieselApiDemos ./src)
 
 # optional libraries
-# wiesel_module_add_dependency(HelloWiesel wiesel-net)
+# wiesel_module_add_dependency(WieselApiDemos wiesel-net)
 
 # default setup for the project
 include(wiesel-default-setup)
-wiesel_default_project_setup(HelloWiesel)
+wiesel_default_project_setup(WieselApiDemos)
