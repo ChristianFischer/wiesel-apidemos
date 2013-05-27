@@ -30,20 +30,21 @@
 #include <wiesel.h>
 
 #include "application.h"
+#include "mainmenu_scene.h"
 
 using namespace wiesel;
 using namespace wiesel::video;
 using namespace std;
 
 
-MyApplication::MyApplication() {
+ApiDemosApp::ApiDemosApp() {
 }
 
-MyApplication::~MyApplication() {
+ApiDemosApp::~ApiDemosApp() {
 }
 
 
-bool MyApplication::onInit() {
+bool ApiDemosApp::onInit() {
 	// at first, we create our screen object
 	screen = new Screen();
 
@@ -73,15 +74,20 @@ bool MyApplication::onInit() {
 	font_ss->createRasterFrames(16, 8, 97, 31, '!');
 	this->default_font = new BitmapFont(font_ss);
 
+	// load the hud spritesheet
+	File*			hud_file		= Engine::getInstance()->getAssetFileSystem()->findFile("/images/hud.xml");
+	spritesheet_hud					= SpriteSheet::fromFile(hud_file);
+	spritesheet_hud->getTexture()->loadContentFrom(screen);
+
 	// create a scene which will be rendered to our screen
-	Scene *scene = new Scene();
+	Scene *scene = new MainMenuScene(this, NULL);
 	pushScene(scene);
 
 	return true;
 }
 
 
-void MyApplication::onRun(float dt) {
+void ApiDemosApp::onRun(float dt) {
 	Application::onRun(dt);
 
 	switch(screen->getState()) {
@@ -116,19 +122,19 @@ void MyApplication::onRun(float dt) {
 }
 
 
-void MyApplication::onRender(RenderContext *render_context) {
+void ApiDemosApp::onRender(RenderContext *render_context) {
 	Application::onRender(render_context);
 	return;
 }
 
 
-void MyApplication::onShutdown() {
+void ApiDemosApp::onShutdown() {
 	return;
 }
 
 
 
 // set the application entry point
-WIESEL_APPLICATION_SETUP( MyApplication );
+WIESEL_APPLICATION_SETUP( ApiDemosApp );
 
 

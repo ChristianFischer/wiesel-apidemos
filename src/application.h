@@ -25,13 +25,14 @@
 #include <wiesel/application.h>
 
 #include <wiesel/ui/font.h>
+#include <wiesel/resources/graphics/spritesheet.h>
 
 
-class MyApplication : public wiesel::Application
+class ApiDemosApp : public wiesel::Application
 {
 public:
-	MyApplication();
-	virtual ~MyApplication();
+	ApiDemosApp();
+	virtual ~ApiDemosApp();
 
 public:
 	virtual bool onInit();
@@ -48,9 +49,14 @@ public:
 		return default_font;
 	}
 
+	inline wiesel::SpriteSheet* getHudSpritesheet() {
+		return spritesheet_hud;
+	}
+
 private:
 	wiesel::ref<wiesel::video::Screen>		screen;
 	wiesel::ref<wiesel::Font>				default_font;
+	wiesel::ref<wiesel::SpriteSheet>		spritesheet_hud;
 };
 
 #endif // __APPLICATION_H__
