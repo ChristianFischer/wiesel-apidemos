@@ -24,12 +24,14 @@
 #include "spritedemo_scene.h"
 #include "multispritedemo_scene.h"
 #include "shaderdemo_scene.h"
+#include "mandelbrotdemo_scene.h"
 
 
 Graphics2DMenuScene::Graphics2DMenuScene(ApiDemosApp* app, SceneBase *previous) : MenuScene(app, previous) {
 	this->addMenuEntry("1.024 single sprites",		&createScene<SpriteDemoScene>);
 	this->addMenuEntry("1.024 batch frames",		&createScene<MultiSpriteDemoScene>);
 	this->addMenuEntry("shader effects",			&createScene<ShaderDemoScene>);
+	this->addMenuEntry("Mandelbrot shader",			&createScene<MandelbrotDemoScene>);
 
 	return;
 }
