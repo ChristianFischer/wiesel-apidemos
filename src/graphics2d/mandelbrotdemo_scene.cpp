@@ -23,6 +23,7 @@
 #include "wiesel/io/filesystem.h"
 #include "wiesel/graph/2d/rect_shape_node.h"
 #include "wiesel/video/shaders.h"
+#include "wiesel/video/shader_builder.h"
 
 #include <wiesel/video/texture.h>
 
@@ -35,42 +36,20 @@ MandelbrotDemoScene::MandelbrotDemoScene(ApiDemosApp *app, SceneBase *previous)
 {
 	shift = vector2d(0.5f, 0.0f);
 
-	Shader *shader = new Shader();
-	shader->setSource(
-							Shader::GLSL_VERTEX_SHADER,
-							Engine::getInstance()
-								->getAssetFileSystem()
-								->findFile("/shaders/mandelbrot.glsl.vert")
-								->asDataSource()
-	);
+	ShaderBuilder shader_builder;
+	shader_builder.setSourcesFromFiles(Engine::getInstance()->getAssetFileSystem(), "/shaders/mandelbrot");
 
-	shader->setSource(
-							Shader::GLSL_FRAGMENT_SHADER,
-							Engine::getInstance()
-								->getAssetFileSystem()
-								->findFile("/shaders/mandelbrot.glsl.frag")
-								->asDataSource()
-	);
+	shader_builder.setDefaultAttributeName(Shader::VertexPosition,		0);
+	shader_builder.setDefaultAttributeName(Shader::VertexColor,			0);
 
-	shader->setAttributeName(Shader::VertexPosition,			0, Shaders::ATTRIBUTE_VERTEX_POSITION);
-	shader->setAttributeName(Shader::VertexColor,				0, Shaders::ATTRIBUTE_VERTEX_COLOR);
-
-	shader->addConstantBuffer(
-							Shaders::CONSTANTBUFFER_MODELVIEW_MATRIX,
-							Shader::Context_VertexShader,
-							Shaders::instance()->getModelviewMatrixBufferTemplate()
-	);
-
-	shader->addConstantBuffer(
-							Shaders::CONSTANTBUFFER_PROJECTION_MATRIX,
-							Shader::Context_VertexShader,
-							Shaders::instance()->getProjectionMatrixBufferTemplate()
-	);
+	shader_builder.addDefaultModelviewMatrixConstantBuffer();
+	shader_builder.addDefaultProjectionMatrixConstantBuffer();
 
 	rect_node = new RectShapeNode();
 	rect_node->setPivot(0, 0);
 	rect_node->setPosition(0, 0);
-	rect_node->setShader(shader);
+	rect_node->setShader(shader_builder.create());
+
 	this->addChild(rect_node);
 
 	return;
