@@ -22,6 +22,7 @@
 #include "shaderdemo_scene.h"
 #include "wiesel/io/filesystem.h"
 #include "wiesel/video/shaders.h"
+#include "wiesel/video/shader_builder.h"
 
 #include <wiesel/video/texture.h>
 
@@ -67,37 +68,20 @@ ShaderDemoScene::ShaderDemoScene(ApiDemosApp *app, SceneBase *previous)
 			continue;
 		}
 
-		std::stringstream attr_tex;
-		attr_tex << Shaders::UNIFORM_TEXTURE;
-		attr_tex << 0;
+		ShaderBuilder shader_builder;
+		shader_builder.setSource(Shader::GLSL_VERTEX_SHADER,	default_glsl_vert_source);
+		shader_builder.setSource(Shader::GLSL_FRAGMENT_SHADER,	glsl_frag_file->asDataSource());
 
-		std::stringstream attr_tex_coord;
-		attr_tex_coord << Shaders::ATTRIBUTE_VERTEX_TEXTURE_COORDINATE;
-		attr_tex_coord << 0;
+		shader_builder.setDefaultAttributeName(Shader::VertexPosition,			0);
+		shader_builder.setDefaultAttributeName(Shader::Texture,					0);
+		shader_builder.setDefaultAttributeName(Shader::VertexTextureCoordinate,	0);
 
-		Shader *shader = new Shader();
-		shader->setSource(Shader::GLSL_VERTEX_SHADER,	default_glsl_vert_source);
-		shader->setSource(Shader::GLSL_FRAGMENT_SHADER,	glsl_frag_file->asDataSource());
-
-		shader->setAttributeName(Shader::VertexPosition,			0, Shaders::ATTRIBUTE_VERTEX_POSITION);
-		shader->setAttributeName(Shader::Texture,					0, attr_tex.str());
-		shader->setAttributeName(Shader::VertexTextureCoordinate,	0, attr_tex_coord.str());
-
-		shader->addConstantBuffer(
-								Shaders::CONSTANTBUFFER_MODELVIEW_MATRIX,
-								Shader::Context_VertexShader,
-								Shaders::instance()->getModelviewMatrixBufferTemplate()
-		);
-
-		shader->addConstantBuffer(
-								Shaders::CONSTANTBUFFER_PROJECTION_MATRIX,
-								Shader::Context_VertexShader,
-								Shaders::instance()->getProjectionMatrixBufferTemplate()
-		);
+		shader_builder.addDefaultModelviewMatrixConstantBuffer();
+		shader_builder.addDefaultProjectionMatrixConstantBuffer();
 
 		ShaderEntry entry;
 		entry.name		= *it;
-		entry.shader	= shader;
+		entry.shader	= shader_builder.create();
 		shaders.push_back(entry);
 	}
 
