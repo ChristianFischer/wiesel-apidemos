@@ -25,6 +25,7 @@
 #include "multispritedemo_scene.h"
 #include "shaderdemo_scene.h"
 #include "mandelbrotdemo_scene.h"
+#include "lightingdemo_scene.h"
 
 
 Graphics2DMenuScene::Graphics2DMenuScene(ApiDemosApp* app, SceneBase *previous) : MenuScene(app, previous) {
@@ -32,6 +33,7 @@ Graphics2DMenuScene::Graphics2DMenuScene(ApiDemosApp* app, SceneBase *previous) 
 	this->addMenuEntry("1.024 batch frames",		&createScene<MultiSpriteDemoScene>);
 	this->addMenuEntry("shader effects",			&createScene<ShaderDemoScene>);
 	this->addMenuEntry("Mandelbrot shader",			&createScene<MandelbrotDemoScene>);
+	this->addMenuEntry("lighting",					&createScene<LightingDemoScene>);
 
 	return;
 }
