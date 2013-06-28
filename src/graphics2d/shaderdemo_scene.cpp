@@ -159,7 +159,7 @@ void ShaderDemoScene::onButtonPrevious(Button* button) {
 
 
 void ShaderDemoScene::onButtonNext(Button* button) {
-	if ((++current_shader) >= shaders.size()) {
+	if (static_cast<size_t>(++current_shader) >= shaders.size()) {
 		current_shader = 0;
 	}
 
